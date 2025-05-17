@@ -2,7 +2,9 @@ package com.lais.pokemon_api.adapters.web;
 
 
 import com.lais.pokemon_api.application.dto.AddFavoritePokemonDto;
+import com.lais.pokemon_api.application.dto.PokemonDetailsDto;
 import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
+import com.lais.pokemon_api.application.exception.UserNotFoundException;
 import com.lais.pokemon_api.application.usecases.PokemonUseCase;
 import com.lais.pokemon_api.domain.model.User;
 import org.springframework.http.HttpStatus;
@@ -60,6 +62,33 @@ public class UserController {
     ) {
         useCase.delete(email, pokemonsToRemove.getFavoritePokemonsName());
         return ResponseEntity.noContent().build();
+    }
+
+    //@GetMapping("/favorites/details")
+    //public ResponseEntity<UserFavoritePokemonDto> getFavoriteDetail(
+    //        @RequestParam String email,
+    //        @RequestParam String pokemonName
+    //) {
+//
+    //    if (!orderBy.equalsIgnoreCase("asc") && !orderBy.equalsIgnoreCase("desc")){
+    //        throw new IllegalArgumentException("Order by param must be 'asc' or 'desc'");
+    //    }
+    //    UserFavoritePokemonDto pokemons = useCase.getFavorites(email, orderBy);
+    //    return ResponseEntity.ok(pokemons);
+    //}
+
+    @GetMapping("/favorites/details")
+    public ResponseEntity<PokemonDetailsDto> validateUser(
+            @RequestParam String email,
+            @RequestParam String pokemonName
+        ){
+        boolean userFavorite = useCase.validateFavorite(email, pokemonName);
+        System.out.println(userFavorite);
+        if(!userFavorite){
+            throw new UserNotFoundException();
+        }
+        PokemonDetailsDto pokemonDetails = useCase.getDetails(pokemonName);
+        return ResponseEntity.ok(pokemonDetails);
     }
 
 }

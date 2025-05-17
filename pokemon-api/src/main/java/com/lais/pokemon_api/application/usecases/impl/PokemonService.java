@@ -1,9 +1,12 @@
 package com.lais.pokemon_api.application.usecases.impl;
 
+import com.lais.pokemon_api.adapters.pokeapi.dto.PokeDetailDto;
 import com.lais.pokemon_api.adapters.pokeapi.dto.PokeSummaryDto;
 import com.lais.pokemon_api.application.dto.AddFavoritePokemonDto;
+import com.lais.pokemon_api.application.dto.PokemonDetailsDto;
 import com.lais.pokemon_api.application.dto.PokemonSummaryDto;
 import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
+import com.lais.pokemon_api.application.mappers.PokemonDetailsMapper;
 import com.lais.pokemon_api.application.usecases.PokemonUseCase;
 import com.lais.pokemon_api.domain.gatway.ExternalGatway;
 import com.lais.pokemon_api.domain.gatway.ReposotoryGatway;
@@ -23,26 +26,26 @@ public class PokemonService implements PokemonUseCase {
     private List<String> pokemonsCacheName;
     private final ExternalGatway externalGatway;
     private final ReposotoryGatway reposotoryGatway;
+    private final PokemonDetailsMapper pokemonDetailsMapper;
 
-
-    public PokemonService(ExternalGatway externalGatway, ReposotoryGatway reposotoryGatway, List<String> pokemonsCacheName) {
+    public PokemonService(ExternalGatway externalGatway, ReposotoryGatway reposotoryGatway, PokemonDetailsMapper pokemonDetailsMapper) {
         this.externalGatway = externalGatway;
         this.reposotoryGatway = reposotoryGatway;
-        this.pokemonsCacheName = pokemonsCacheName;
+        this.pokemonDetailsMapper = pokemonDetailsMapper;
     }
 
-    @PostConstruct
-    public void loadPokemonsName() {
-        refreshCache();
-    }
-
-    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
-    public void refreshCache() {
-        this.pokemonsCacheName = externalGatway.listAll().results()
-                .stream().map(PokeSummaryDto::name).sorted().toList();
-        System.out.println("Cache updated at: " + LocalDateTime.now());
-        System.out.println("Size of cache: " + pokemonsCacheName.size());
-    }
+    //@PostConstruct
+    //public void loadPokemonsName() {
+    //    refreshCache();
+    //}
+//
+    //@Scheduled(fixedRate = 6 * 60 * 60 * 1000)
+    //public void refreshCache() {
+    //    this.pokemonsCacheName = externalGatway.listAll().results()
+    //            .stream().map(PokeSummaryDto::name).sorted().toList();
+    //    System.out.println("Cache updated at: " + LocalDateTime.now());
+    //    System.out.println("Size of cache: " + pokemonsCacheName.size());
+    //}
 
     @Override
     public PokemonSummaryDto listAll(String orderBy, Integer limit, Integer offset) {
@@ -90,5 +93,20 @@ public class PokemonService implements PokemonUseCase {
         reposotoryGatway.delete(email, pokemon);
     }
 
+    @Override
+    public boolean userExists(String email){
+        return reposotoryGatway.userExists(email);
+    }
+
+    @Override
+    public PokemonDetailsDto getDetails(String pokemonName){
+        PokeDetailDto pokemonDetailResponse = externalGatway.getDetails(pokemonName);
+        return  pokemonDetailsMapper.toDetailsDto(pokemonDetailResponse);
+    }
+
+    @Override
+    public boolean validateFavorite(String email, String name){
+        return reposotoryGatway.validateFavorite(email, name);
+    }
 
 }

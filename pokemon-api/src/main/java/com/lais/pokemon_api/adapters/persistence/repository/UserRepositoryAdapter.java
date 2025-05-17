@@ -51,4 +51,14 @@ public class UserRepositoryAdapter implements ReposotoryGatway {
         userRepositoryCustom.deleteByEmail(email, pokemon);
     }
 
+    @Override
+    public boolean userExists(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean validateFavorite(String email, String pokemonName){
+        return userRepositoryCustom.validateFavorite(email, pokemonName);
+    }
+
 }

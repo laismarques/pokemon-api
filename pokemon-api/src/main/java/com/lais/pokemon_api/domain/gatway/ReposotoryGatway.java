@@ -14,5 +14,6 @@ public interface ReposotoryGatway {
     List<String> getFavorites(String email);
     void addFavorites(String email, List<String> favoritePokemons);
     void delete(String email, List<String> pokemon);
-
+    boolean validateFavorite(String email, String pokemonName);
+    boolean userExists(String email);
 }

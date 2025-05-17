@@ -35,4 +35,22 @@ public class UserCustomImp implements UserRepositoryCustom{
         mongoTemplate.updateFirst(query, update, UserEntity.class);
 
     }
+
+    @Override
+    public boolean validateFavorite(String email, String pokemonName){
+
+        Query query = new Query();
+        query.addCriteria(
+                new Criteria().andOperator(
+                        Criteria.where("email").is(email),
+                        Criteria.where("favoritePokemonsName").in(pokemonName)));
+
+
+        long existsFavorite = mongoTemplate.count(query, UserEntity.class);
+        System.out.println("MONGO DB");
+        System.out.println(existsFavorite);
+        return existsFavorite > 0;
+    }
+
+
 }

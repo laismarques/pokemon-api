@@ -33,4 +33,6 @@ public class PokemonController {
         PokemonSummaryDto response = pokemonUseCase.listAll(orderBy, limit, offset);
         return ResponseEntity.ok(response);
     }
+
+
 }

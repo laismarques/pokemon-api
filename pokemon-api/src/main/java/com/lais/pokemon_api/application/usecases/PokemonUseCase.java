@@ -1,6 +1,7 @@
 package com.lais.pokemon_api.application.usecases;
 
 import com.lais.pokemon_api.application.dto.AddFavoritePokemonDto;
+import com.lais.pokemon_api.application.dto.PokemonDetailsDto;
 import com.lais.pokemon_api.application.dto.PokemonSummaryDto;
 import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
 import com.lais.pokemon_api.domain.model.User;
@@ -19,5 +20,8 @@ public interface PokemonUseCase {
     UserFavoritePokemonDto getFavorites(String email, String orderBy);
     void addFavorites(String email, AddFavoritePokemonDto favoritePokemonDto);
     void delete(String email, List<String> pokemon);
+    boolean validateFavorite(String email, String pokemonName);
+    PokemonDetailsDto getDetails(String pokemonName);
 
+    boolean userExists(String email);
 }
