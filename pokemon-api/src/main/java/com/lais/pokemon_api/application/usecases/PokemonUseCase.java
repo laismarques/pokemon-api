@@ -1,7 +1,11 @@
 package com.lais.pokemon_api.application.usecases;
 
 import com.lais.pokemon_api.application.dto.PokemonSummaryDto;
+import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
+import com.lais.pokemon_api.domain.model.User;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 @Component
@@ -9,4 +13,7 @@ public interface PokemonUseCase {
 
 
     PokemonSummaryDto listAll(String orderBy, Integer limit, Integer offset);
+
+    void save(User user);
+    UserFavoritePokemonDto getFavorites(String email, String orderBy);
 }
