@@ -1,6 +1,7 @@
 package com.lais.pokemon_api.application.usecases.impl;
 
 import com.lais.pokemon_api.adapters.pokeapi.dto.PokeSummaryDto;
+import com.lais.pokemon_api.application.dto.AddFavoritePokemonDto;
 import com.lais.pokemon_api.application.dto.PokemonSummaryDto;
 import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
 import com.lais.pokemon_api.application.usecases.PokemonUseCase;
@@ -76,6 +77,12 @@ public class PokemonService implements PokemonUseCase {
         List<String> favoritePokemonNames = reposotoryGatway.getFavorites(email);
 
        return new UserFavoritePokemonDto(sortFavoritePokemons(favoritePokemonNames, orderBy));
+    }
+
+    @Override
+    public void addFavorites(String email, AddFavoritePokemonDto favoritePokemons){
+
+        reposotoryGatway.addFavorites(email, favoritePokemons.getFavoritePokemonsName());
     }
 
 

@@ -1,5 +1,6 @@
 package com.lais.pokemon_api.application.usecases;
 
+import com.lais.pokemon_api.application.dto.AddFavoritePokemonDto;
 import com.lais.pokemon_api.application.dto.PokemonSummaryDto;
 import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
 import com.lais.pokemon_api.domain.model.User;
@@ -16,4 +17,5 @@ public interface PokemonUseCase {
 
     void save(User user);
     UserFavoritePokemonDto getFavorites(String email, String orderBy);
+    void addFavorites(String email, AddFavoritePokemonDto favoritePokemonDto);
 }

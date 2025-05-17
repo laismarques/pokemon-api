@@ -1,6 +1,7 @@
 package com.lais.pokemon_api.adapters.web;
 
 
+import com.lais.pokemon_api.application.dto.AddFavoritePokemonDto;
 import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
 import com.lais.pokemon_api.application.usecases.PokemonUseCase;
 import com.lais.pokemon_api.domain.model.User;
@@ -27,14 +28,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping
-    public ResponseEntity<String> getseila(
-            @RequestBody User user
-    ){
-
-        return ResponseEntity.ok("teste");
-    }
-
 
     @GetMapping("/favorites")
     public ResponseEntity<UserFavoritePokemonDto> getFavorite(
@@ -47,6 +40,16 @@ public class UserController {
         }
         UserFavoritePokemonDto pokemons = useCase.getFavorites(email, orderBy);
         return ResponseEntity.ok(pokemons);
+    }
+
+    @PostMapping("/favorites")
+    public ResponseEntity<String> addFavorites(
+            @RequestParam String email,
+            @RequestBody AddFavoritePokemonDto favoritePokemons
+    ) {
+        useCase.addFavorites(email, favoritePokemons);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+
     }
 
 }

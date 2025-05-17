@@ -12,4 +12,5 @@ public interface ReposotoryGatway {
 
     void save(User user);
     List<String> getFavorites(String email);
+    void addFavorites(String email, List<String> favoritePokemons);
 }

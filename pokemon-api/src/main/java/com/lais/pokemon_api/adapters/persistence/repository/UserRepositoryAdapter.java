@@ -16,10 +16,12 @@ public class UserRepositoryAdapter implements ReposotoryGatway {
     @Autowired
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private  UserRepositoryCustom userRepositoryCustom;
 
-    public UserRepositoryAdapter(UserRepository userRepository, UserMapper userMapper) {
+    public UserRepositoryAdapter(UserRepository userRepository, UserMapper userMapper, UserRepositoryCustom userRepositoryCustom) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.userRepositoryCustom = userRepositoryCustom;
     }
 
     @Override
@@ -35,6 +37,12 @@ public class UserRepositoryAdapter implements ReposotoryGatway {
     public List<String> getFavorites(String email){
         UserEntity user = userRepository.findByEmail(email);
         return  user.getFavoritePokemonsName();
+    }
+
+    @Override
+    public void addFavorites(String email, List<String> pokemon){
+        System.out.println("ADAPTER: "+ email);
+        userRepositoryCustom.addFavorites(email, pokemon);
     }
 
 }
