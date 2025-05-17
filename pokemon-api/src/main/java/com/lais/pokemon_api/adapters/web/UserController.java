@@ -52,4 +52,14 @@ public class UserController {
 
     }
 
+
+    @DeleteMapping("/favorites")
+    public ResponseEntity<String> deleteFavorite(
+            @RequestParam String email,
+            @RequestBody AddFavoritePokemonDto pokemonsToRemove
+    ) {
+        useCase.delete(email, pokemonsToRemove.getFavoritePokemonsName());
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -25,4 +25,14 @@ public class UserCustomImp implements UserRepositoryCustom{
         Update update = new Update().addToSet("favoritePokemonsName ").each(pokemon);
         mongoTemplate.updateFirst(query, update, UserEntity.class);
     }
+
+    @Override
+    public void deleteByEmail(String email, List<String> pokemon){
+        System.out.println("USER CUSTOM: "+ email + pokemon);
+        Query query = new Query(Criteria.where("email").is(email));
+        Update update = new Update().pullAll("favoritePokemonsName", pokemon.toArray());
+        System.out.println(update);
+        mongoTemplate.updateFirst(query, update, UserEntity.class);
+
+    }
 }

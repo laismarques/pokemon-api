@@ -85,5 +85,10 @@ public class PokemonService implements PokemonUseCase {
         reposotoryGatway.addFavorites(email, favoritePokemons.getFavoritePokemonsName());
     }
 
+    @Override
+    public void delete(String email, List<String> pokemon){
+        reposotoryGatway.delete(email, pokemon);
+    }
+
 
 }

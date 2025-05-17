@@ -45,4 +45,10 @@ public class UserRepositoryAdapter implements ReposotoryGatway {
         userRepositoryCustom.addFavorites(email, pokemon);
     }
 
+    @Override
+    public void delete(String email, List<String> pokemon){
+        System.out.println("ADAPTER: "+ email);
+        userRepositoryCustom.deleteByEmail(email, pokemon);
+    }
+
 }
