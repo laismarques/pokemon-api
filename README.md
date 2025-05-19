@@ -1,4 +1,4 @@
-####Pokemon API
+#### Pokemon API
 
 Este projeto é uma API RESTful desenvolvida em **Java + Spring Boot** seguindo os princípios da **Arquitetura Limpa**. Ele integra com a [PokeAPI](https://pokeapi.co) e permite que usuários gerenciem seus Pokémons favoritos.
 
