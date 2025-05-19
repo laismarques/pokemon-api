@@ -1,9 +1,8 @@
 package com.lais.pokemon_api.adapters.persistence.repository;
 
 import com.lais.pokemon_api.adapters.persistence.entity.UserEntity;
-import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
 import com.lais.pokemon_api.application.mappers.UserMapper;
-import com.lais.pokemon_api.domain.gatway.ReposotoryGatway;
+import com.lais.pokemon_api.domain.gatway.RepostoryGatway;
 import com.lais.pokemon_api.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,7 @@ import java.util.List;
 
 
 @Component
-public class UserRepositoryAdapter implements ReposotoryGatway {
+public class UserRepositoryAdapter implements RepostoryGatway {
     @Autowired
     private UserRepository userRepository;
     private UserMapper userMapper;
@@ -27,10 +26,8 @@ public class UserRepositoryAdapter implements ReposotoryGatway {
     @Override
     public void save(User user){
         UserEntity userEntity = userMapper.convertToUserEntity(user);
-        System.out.println("REPOSITORY ADAPTER");
-        System.out.println(userEntity.getEmail());
         UserEntity usuarioSalvo = userRepository.save(userEntity);
-        System.out.println(usuarioSalvo.getId());
+
     }
 
     @Override
@@ -41,13 +38,11 @@ public class UserRepositoryAdapter implements ReposotoryGatway {
 
     @Override
     public void addFavorites(String email, List<String> pokemon){
-        System.out.println("ADAPTER: "+ email);
         userRepositoryCustom.addFavorites(email, pokemon);
     }
 
     @Override
     public void delete(String email, List<String> pokemon){
-        System.out.println("ADAPTER: "+ email);
         userRepositoryCustom.deleteByEmail(email, pokemon);
     }
 

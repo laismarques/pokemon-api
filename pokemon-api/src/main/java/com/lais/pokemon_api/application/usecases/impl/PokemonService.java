@@ -9,14 +9,13 @@ import com.lais.pokemon_api.application.dto.UserFavoritePokemonDto;
 import com.lais.pokemon_api.application.mappers.PokemonDetailsMapper;
 import com.lais.pokemon_api.application.usecases.PokemonUseCase;
 import com.lais.pokemon_api.domain.gatway.ExternalGatway;
-import com.lais.pokemon_api.domain.gatway.ReposotoryGatway;
+import com.lais.pokemon_api.domain.gatway.RepostoryGatway;
 import com.lais.pokemon_api.domain.model.User;
 import jakarta.annotation.PostConstruct;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,27 +24,27 @@ public class PokemonService implements PokemonUseCase {
 
     private List<String> pokemonsCacheName;
     private final ExternalGatway externalGatway;
-    private final ReposotoryGatway reposotoryGatway;
+    private final RepostoryGatway repostoryGatway;
     private final PokemonDetailsMapper pokemonDetailsMapper;
 
-    public PokemonService(ExternalGatway externalGatway, ReposotoryGatway reposotoryGatway, PokemonDetailsMapper pokemonDetailsMapper) {
+    public PokemonService(ExternalGatway externalGatway, RepostoryGatway repostoryGatway, PokemonDetailsMapper pokemonDetailsMapper) {
         this.externalGatway = externalGatway;
-        this.reposotoryGatway = reposotoryGatway;
+        this.repostoryGatway = repostoryGatway;
         this.pokemonDetailsMapper = pokemonDetailsMapper;
     }
 
-    //@PostConstruct
-    //public void loadPokemonsName() {
-    //    refreshCache();
-    //}
-//
-    //@Scheduled(fixedRate = 6 * 60 * 60 * 1000)
-    //public void refreshCache() {
-    //    this.pokemonsCacheName = externalGatway.listAll().results()
-    //            .stream().map(PokeSummaryDto::name).sorted().toList();
-    //    System.out.println("Cache updated at: " + LocalDateTime.now());
-    //    System.out.println("Size of cache: " + pokemonsCacheName.size());
-    //}
+    @PostConstruct
+    public void loadPokemonsName() {
+        refreshCache();
+    }
+
+    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
+    public void refreshCache() {
+        this.pokemonsCacheName = externalGatway.listAll().results()
+                .stream().map(PokeSummaryDto::name).sorted().toList();
+        System.out.println("Cache updated at: " + LocalDateTime.now());
+        System.out.println("Size of cache: " + pokemonsCacheName.size());
+    }
 
     @Override
     public PokemonSummaryDto listAll(String orderBy, Integer limit, Integer offset) {
@@ -72,12 +71,12 @@ public class PokemonService implements PokemonUseCase {
 
     @Override
     public void save(User user) {
-        reposotoryGatway.save(user);
+        repostoryGatway.save(user);
     }
 
     @Override
     public UserFavoritePokemonDto getFavorites(String email, String orderBy){
-        List<String> favoritePokemonNames = reposotoryGatway.getFavorites(email);
+        List<String> favoritePokemonNames = repostoryGatway.getFavorites(email);
 
        return new UserFavoritePokemonDto(sortFavoritePokemons(favoritePokemonNames, orderBy));
     }
@@ -85,17 +84,17 @@ public class PokemonService implements PokemonUseCase {
     @Override
     public void addFavorites(String email, AddFavoritePokemonDto favoritePokemons){
 
-        reposotoryGatway.addFavorites(email, favoritePokemons.getFavoritePokemonsName());
+        repostoryGatway.addFavorites(email, favoritePokemons.getFavoritePokemonsName());
     }
 
     @Override
     public void delete(String email, List<String> pokemon){
-        reposotoryGatway.delete(email, pokemon);
+        repostoryGatway.delete(email, pokemon);
     }
 
     @Override
     public boolean userExists(String email){
-        return reposotoryGatway.userExists(email);
+        return repostoryGatway.userExists(email);
     }
 
     @Override
@@ -106,7 +105,7 @@ public class PokemonService implements PokemonUseCase {
 
     @Override
     public boolean validateFavorite(String email, String name){
-        return reposotoryGatway.validateFavorite(email, name);
+        return repostoryGatway.validateFavorite(email, name);
     }
 
 }

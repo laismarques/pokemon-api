@@ -64,18 +64,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    //@GetMapping("/favorites/details")
-    //public ResponseEntity<UserFavoritePokemonDto> getFavoriteDetail(
-    //        @RequestParam String email,
-    //        @RequestParam String pokemonName
-    //) {
-//
-    //    if (!orderBy.equalsIgnoreCase("asc") && !orderBy.equalsIgnoreCase("desc")){
-    //        throw new IllegalArgumentException("Order by param must be 'asc' or 'desc'");
-    //    }
-    //    UserFavoritePokemonDto pokemons = useCase.getFavorites(email, orderBy);
-    //    return ResponseEntity.ok(pokemons);
-    //}
 
     @GetMapping("/favorites/details")
     public ResponseEntity<PokemonDetailsDto> validateUser(
@@ -83,7 +71,7 @@ public class UserController {
             @RequestParam String pokemonName
         ){
         boolean userFavorite = useCase.validateFavorite(email, pokemonName);
-        System.out.println(userFavorite);
+
         if(!userFavorite){
             throw new UserNotFoundException();
         }
